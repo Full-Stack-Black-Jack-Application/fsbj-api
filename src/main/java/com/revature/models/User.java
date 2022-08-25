@@ -33,13 +33,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(columnDefinition = "int default 0")
     private int wins;
 
+    @Column(columnDefinition = "int default 0")
     private int losses;
 
+    @Column(columnDefinition = "numeric(15,6) default 0")
     private Double balance;
 
-    @Column(name = "net_profits")
+    @Column(name = "net_profits", columnDefinition = "numeric(15,6) default 0")
     private Double netProfits;
 
     @NotBlank
@@ -60,6 +63,7 @@ public class User {
     private String pswd;
 
     @NotBlank
+    @Column(unique = true)
     private String referralCode;
 
     // Id-less Constructor
