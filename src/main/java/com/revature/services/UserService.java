@@ -25,9 +25,9 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public User getByCredentials(Credentials creds){
+    public User getByCredentials(Credentials creds) {
 
-        Optional<User> userInDb = userRepo.findByEmailAndPassword(creds.getEmail(), creds.getPswd());
+        Optional<User> userInDb = userRepo.findByEmailAndPswd(creds.getEmail(), creds.getPswd());
 
         if (userInDb.isPresent()) {
             log.info("Found user with email {}", creds.getEmail());
@@ -38,23 +38,23 @@ public class UserService {
         }
     }
 
-    @Transactional (readOnly = true)
-    public List<User> getAll(){
+    @Transactional(readOnly = true)
+    public List<User> getAll() {
         return userRepo.findAll();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public User addUser(User user){
+    public User addUser(User user) {
         return userRepo.save(user);
     }
 
     @Transactional
-    public void deleteUser(int id){
+    public void deleteUser(int id) {
         userRepo.deleteById(id);
     }
 
     @Transactional
-    public User updateUser(User user){
+    public User updateUser(User user) {
         return userRepo.save(user);
     }
 
@@ -65,8 +65,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserById(int id){
-        if (id <= 0){
+    public User getUserById(int id) {
+        if (id <= 0) {
             log.warn("Invalid ID, ID cannot be less than 0. ID passed in was: {}", id);
             return null;
         } else {
@@ -75,13 +75,15 @@ public class UserService {
     }
 
     @Transactional
-    public User updateStats(int id, double netProfit){
-        if (netProfit < 0){
+    public User updateStats(int id, double netProfit) {
+        if (netProfit < 0) {
             userRepo.incrementLosses(id);
         } else {
             userRepo.incrementWins(id);
         }
         userRepo.addToNetProfits(id, netProfit);
-        return userRepo.findById(id).get();
+        userRepo.incrementBalance(id, netProfit);
+        return userRepo.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("For Update: No user found with ID: " + id));
     }
 }
