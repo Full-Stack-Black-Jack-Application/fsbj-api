@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -44,8 +45,20 @@ public class UserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public User addUser(User user) {
-        return userRepo.save(user);
+    public User addUser(User newUser) {
+        String referralCode = newUser.getReferralCode();
+        User oldUser = userRepo.findByReferralCode(referralCode).orElse(null);
+
+        if (oldUser != null) {
+            newUser.setBalance(200.0);
+            userRepo.incrementBalance(oldUser.getId(), 200.0);
+        }
+
+        // Math.abs(ThreadLocalRandom.current().nextInt())
+        String uuid_string = UUID.randomUUID().toString().substring(9, 23);
+        newUser.setReferralCode(uuid_string);
+
+        return userRepo.save(newUser);
     }
 
     @Transactional
@@ -76,14 +89,29 @@ public class UserService {
 
     @Transactional
     public User updateStats(int id, double netProfit) {
+
+        // Increment wins and losses based on the passed-in netProfit
         if (netProfit < 0) {
             userRepo.incrementLosses(id);
         } else {
             userRepo.incrementWins(id);
         }
+        // Add the netProfit to both the netProfits and Balance Fields
         userRepo.addToNetProfits(id, netProfit);
         userRepo.incrementBalance(id, netProfit);
-        return userRepo.findById(id)
+
+        // Get the user with the passed-in ID
+        User user = userRepo.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("For Update: No user found with ID: " + id));
+
+        // Below Code is for the User that will be outputed
+        if (netProfit < 0) {
+            user.setLosses(user.getLosses() + 1);
+        } else {
+            user.setWins(user.getWins() + 1);
+        }
+        user.setBalance(user.getBalance() + netProfit);
+        user.setNetProfits(user.getNetProfits() + netProfit);
+        return user;
     }
 }

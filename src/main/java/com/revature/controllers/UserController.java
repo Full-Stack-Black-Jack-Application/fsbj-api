@@ -53,6 +53,7 @@ public class UserController {
         newUser.setWins(oldUser.getWins());
         newUser.setLosses(oldUser.getLosses());
         newUser.setNetProfits(oldUser.getNetProfits());
+        newUser.setReferralCode(oldUser.getReferralCode());
         return ResponseEntity.ok(userService.updateUser(newUser));
     }
 
