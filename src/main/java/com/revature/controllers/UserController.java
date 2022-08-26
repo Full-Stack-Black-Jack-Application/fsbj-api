@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import com.revature.dtos.UserDTO;
+import com.revature.dtos.UserDTO2;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @PatchMapping("/patch/{id}")
-    public ResponseEntity<User> updateStats(@PathVariable("id") int id, @Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> updateStats(@PathVariable("id") int id, @Valid @RequestBody UserDTO2 userDTO) {
         User newUser = modelMapper.map(userDTO, User.class);
         User oldUser = userService.getUserById(id);
         double netProfit = newUser.getBalance() - oldUser.getBalance();
