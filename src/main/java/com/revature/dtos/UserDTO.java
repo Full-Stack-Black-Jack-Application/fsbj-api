@@ -19,7 +19,7 @@ public class UserDTO {
 
     @NotBlank
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")
-    private @NonNull String password;
+    private @NonNull String pswd;
 
     @NotBlank
     private @NonNull String referralCode;
@@ -32,6 +32,6 @@ public class UserDTO {
     @Length(min = 2)
     private @NonNull String lastName;
 
-    private double balance;
+    private double balance, netProfits;
 
 }
