@@ -2,10 +2,12 @@ package com.revature.controllers;
 
 import com.revature.dtos.UserDTO;
 import com.revature.dtos.UserDTO2;
+import com.revature.exceptions.UserNotFoundException;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +26,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<User> findUserByEmail(@PathVariable("email") String email) {
-        return ResponseEntity.ok(userService.getUserByEmail(email));
-    }
-
     @GetMapping("/get/{id}")
     public ResponseEntity<User> findUserById(@PathVariable("id") int id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        User user;
+
+        // Try to find the user with the given id in the database
+        try {
+            user = userService.getUserById(id);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<User> findUserByEmail(@PathVariable("email") String email) {
+        User user;
+
+        // Try to find the user with the given email in the database
+        try {
+            user = userService.getUserByEmail(email);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping

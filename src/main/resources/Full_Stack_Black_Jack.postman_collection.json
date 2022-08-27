@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e4908689-e650-47f7-b392-dd8ac836cd7d",
+		"_postman_id": "ca8da048-bee9-4bf1-bceb-761b24bb5d6b",
 		"name": "Full_Stack_Black_Jack",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22269619"
@@ -157,6 +157,64 @@
 						"users",
 						"delete",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GOOD Login User With Valid Credentials Using Post Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"spiderman@spideyverse.com\",\n    \"pswd\": \"Ilov3spidey\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BAD Login User With InValid Credentials Using Post Request Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"spiderman@spideyverse.com\",\n    \"pswd\": \"Ilov3spiderRRRRRRRRRRRRR\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
 					]
 				}
 			},

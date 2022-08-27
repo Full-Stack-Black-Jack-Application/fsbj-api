@@ -72,12 +72,6 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByEmail(String email) {
-        return userRepo.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("No user found with email: " + email));
-    }
-
-    @Transactional(readOnly = true)
     public User getUserById(int id) {
         if (id <= 0) {
             log.warn("Invalid ID, ID cannot be less than 0. ID passed in was: {}", id);
@@ -85,6 +79,12 @@ public class UserService {
         } else {
             return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("No user found with ID: " + id));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("No user found with email: " + email));
     }
 
     @Transactional
