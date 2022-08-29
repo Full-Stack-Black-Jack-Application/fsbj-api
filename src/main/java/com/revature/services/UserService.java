@@ -52,9 +52,13 @@ public class UserService {
         if (oldUser != null) {
             newUser.setBalance(200.0);
             userRepo.incrementBalance(oldUser.getId(), 200.0);
+            log.info("User with Referral Code \"{}\" has been found! \nBalances have been increased by $200!",
+                    referralCode);
+        } else {
+            log.info("No user with Referral Code \"{}\" has been found! ", referralCode);
         }
 
-        // Math.abs(ThreadLocalRandom.current().nextInt())
+        log.info("New user has been successfully created! ");
         String uuid_string = UUID.randomUUID().toString().substring(9, 23);
         newUser.setReferralCode(uuid_string);
 
@@ -64,10 +68,12 @@ public class UserService {
     @Transactional
     public void deleteUser(int id) {
         userRepo.deleteById(id);
+        log.info("User has been successfully deleted! ");
     }
 
     @Transactional
     public User updateUser(User user) {
+        log.info("User has been successfully updated! ");
         return userRepo.save(user);
     }
 
@@ -99,6 +105,9 @@ public class UserService {
         // Add the netProfit to both the netProfits and Balance Fields
         userRepo.addToNetProfits(id, netProfit);
         userRepo.incrementBalance(id, netProfit);
+
+        // Log that user's stats have been updated
+        log.info("The stats for user with id {} have been successfully updated! ", id);
 
         // Get the user with the passed-in ID
         User user = userRepo.findById(id)
