@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ca8da048-bee9-4bf1-bceb-761b24bb5d6b",
+		"_postman_id": "817c5f97-9d19-470d-afa6-241d60c42811",
 		"name": "Full_Stack_Black_Jack",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22269619"
@@ -192,7 +192,7 @@
 			"response": []
 		},
 		{
-			"name": "BAD Login User With InValid Credentials Using Post Request Copy",
+			"name": "BAD Login User With InValid Password Using Post Request Copy",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -215,6 +215,108 @@
 					"path": [
 						"api",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BAD Login User With InValid Username Using Post Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"spidermaaaaan@spideyverse.com\",\n    \"pswd\": \"Ilov3spider\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a New Game For User Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": {\n    \"id\": 1,\n    \"wins\": 0,\n    \"losses\": 0,\n    \"balance\": 0.0,\n    \"netProfits\": 0.0,\n    \"firstName\": \"Peter\",\n    \"lastName\": \"Parker\",\n    \"email\": \"spiderman@spideyverse.com\",\n    \"pswd\": \"Ilov3spidey\",\n    \"referralCode\": \"075a-4c70-8854\"\n},\n    \"userScore\": 21,\n    \"dealerScore\": 19,\n    \"balanceBefore\": 300,\n    \"balanceAfter\": 400,\n    \"netProfit\": 100,\n    \"timeOfPlay\": 1661856524\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/games",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Game By ID Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/games/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"games",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Games For a User Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/games/get_all/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"games",
+						"get_all",
+						"1"
 					]
 				}
 			},

@@ -26,17 +26,24 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public User getByCredentials(Credentials creds) {
+    public User getUserByCredentials(Credentials creds) {
+        Optional<User> userInDb = userRepo.findByEmail(creds.getEmail());
 
-        Optional<User> userInDb = userRepo.findByEmailAndPswd(creds.getEmail(), creds.getPswd());
-
-        if (userInDb.isPresent()) {
-            log.info("Found user with email {}", creds.getEmail());
-            return userInDb.get();
-        } else {
-            log.warn("Email and password combination did not match for user {}", creds.getEmail());
+        if (!userInDb.isPresent()) {
+            log.warn("No user with email \"{}\" was found in the database", creds.getEmail());
             return null;
         }
+
+        userInDb = userRepo.findByEmailAndPswd(creds.getEmail(), creds.getPswd());
+
+        if (userInDb.isPresent()) {
+            log.info("Found user with email \"{}\"", creds.getEmail());
+            return userInDb.get();
+        } else {
+            log.warn("Email and password combination did not match for user with email \"{}\"", creds.getEmail());
+            return null;
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -59,8 +66,8 @@ public class UserService {
         }
 
         log.info("New user has been successfully created! ");
-        String uuid_string = UUID.randomUUID().toString().substring(9, 23);
-        newUser.setReferralCode(uuid_string);
+        String uuidString = UUID.randomUUID().toString().substring(9, 23);
+        newUser.setReferralCode(uuidString);
 
         return userRepo.save(newUser);
     }

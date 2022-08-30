@@ -32,7 +32,7 @@ public class AuthenticationController {
     public User login(@RequestBody Credentials creds, HttpServletResponse response) {
 
         // Line below will throw an exception if the user doesn't exist
-        User user = userServ.getByCredentials(creds);
+        User user = userServ.getUserByCredentials(creds);
 
         // If the user is in the DataBase...
         if (user != null) {
